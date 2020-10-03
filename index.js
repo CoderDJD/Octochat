@@ -1,16 +1,28 @@
 const express = require('express');
+
+const morgan = require('morgan');
+
 const cors = require('cors');
+
 const monk = require('monk');
+
 const app = express();
+
 const Filter = require('bad-words');
+
 const rateLimit = require("express-rate-limit");
 
 const db = monk(process.env.MONGO_URI || 'localhost/octochat');
+
 const octos = db.get('octos');
+
 const filter = new Filter();
 
 app.use(cors());
+
 app.use(express.json());
+
+app.use(morgan);
 
 app.get('/', (req, res) => {
     res.json({
